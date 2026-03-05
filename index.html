@@ -1,57 +1,137 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Shiva Rawat</title>
+<title>Shiva Games</title>
+<style>
+body {
+    text-align: center;
+    font-family: Arial;
+    background: black;
+    color: white;
+}
+
+.game-box {
+    margin: 20px;
+    padding: 20px;
+    border: 2px solid white;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+}
+canvas {
+    background: white;
+}
+</style>
 </head>
-<body style="text-align:center; font-family:Arial; background:#f2f2f2;">
+<body>
 
-  <h1>Welcome to Shiva Rawat Website</h1>
+<h1>Welcome To Shiva Game Zone 🔥</h1>
 
-  <!-- YouTube Button -->
-  <a href="https://www.youtube.com/@Shiva_rawat_i3k" target="_blank">
-    <button style="padding:12px 25px; margin:10px; font-size:18px; background:red; color:white; border:none; border-radius:8px;">
-      🔴 Visit My YouTube
-    </button>
-  </a>
+<!-- ================= OX GAME ================= -->
+<div class="game-box">
+<h2>Game 1: OX</h2>
+<div id="board"></div>
+<p id="status"></p>
+</div>
 
-  <br>
+<!-- ================= CIRCLE GAME ================= -->
+<div class="game-box">
+<h2>Game 2: Perfect Circle</h2>
+<canvas id="canvas" width="300" height="300"></canvas>
+<p id="result"></p>
+</div>
 
-  <!-- Instagram Button -->
-  <a href="https://www.instagram.com/killer_boy_7277" target="_blank">
-    <button style="padding:12px 25px; margin:10px; font-size:18px; background:#E1306C; color:white; border:none; border-radius:8px;">
-      📸 Visit My Instagram
-    </button>
-  </a>
+<script>
+/* ================= OX GAME ================= */
+let currentPlayer = "X";
+let board = ["","","","","","","","",""];
+let gameActive = true;
 
-  <hr style="margin:30px;">
+const boardDiv = document.getElementById("board");
+const status = document.getElementById("status");
 
-  <h2>Signup Here</h2>
+boardDiv.style.display = "grid";
+boardDiv.style.gridTemplateColumns = "repeat(3, 60px)";
+boardDiv.style.gap = "5px";
 
-  <form onsubmit="return signup()">
-    <input type="text" id="name" placeholder="Enter Name" required><br><br>
-    <input type="email" id="email" placeholder="Enter Email" required><br><br>
-    <input type="password" id="password" placeholder="Enter Password" required><br><br>
-    <button type="submit" style="padding:10px 20px;">Sign Up</button>
-  </form>
+board.forEach((cell, index) => {
+    const btn = document.createElement("button");
+    btn.style.width = "60px";
+    btn.style.height = "60px";
+    btn.onclick = () => makeMove(index, btn);
+    boardDiv.appendChild(btn);
+});
 
-  <script>
-    function signup() {
-      var name = document.getElementById("name").value;
-      var email = document.getElementById("email").value;
-      var password = document.getElementById("password").value;
+function makeMove(index, btn) {
+    if(board[index] !== "" || !gameActive) return;
+    board[index] = currentPlayer;
+    btn.innerText = currentPlayer;
+    checkWinner();
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+}
 
-      var user = {
-        name: name,
-        email: email,
-        password: password
-      };
+function checkWinner() {
+    const winPatterns = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+    ];
 
-      localStorage.setItem("userData", JSON.stringify(user));
+    winPatterns.forEach(pattern => {
+        const [a,b,c] = pattern;
+        if(board[a] && board[a] === board[b] && board[a] === board[c]) {
+            status.innerText = board[a] + " Wins!";
+            gameActive = false;
+        }
+    });
+}
 
-      alert("Signup Successful!");
-      return false;
-    }
-  </script>
+/* ================= CIRCLE GAME ================= */
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let drawing = false;
+let points = [];
+
+canvas.addEventListener("mousedown", () => {
+    drawing = true;
+    points = [];
+});
+
+canvas.addEventListener("mouseup", () => {
+    drawing = false;
+    calculateCircle();
+});
+
+canvas.addEventListener("mousemove", (e) => {
+    if(!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    points.push({x,y});
+    ctx.fillRect(x,y,2,2);
+});
+
+function calculateCircle() {
+    let centerX = 150;
+    let centerY = 150;
+    let idealRadius = 100;
+    let totalError = 0;
+
+    points.forEach(p => {
+        let dist = Math.sqrt((p.x-centerX)**2 + (p.y-centerY)**2);
+        totalError += Math.abs(dist - idealRadius);
+    });
+
+    let avgError = totalError / points.length;
+    let percent = Math.max(0, 100 - avgError);
+
+    document.getElementById("result").innerText =
+        "Perfectness: " + percent.toFixed(2) + "%";
+}
+</script>
 
 </body>
-    </html>
+</html>

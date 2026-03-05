@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shiva Rawat Official</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            font-family: Arial, sans-serif;
+            text-align:center;
+            color:white;
+            animation: rgbBg 5s infinite alternate;
+        }
+
+        @keyframes rgbBg{
+            0%{background: #000000;}
+            25%{background: #ff0000;}
+            50%{background: #0000ff;}
+            75%{background: #00ff00;}
+            100%{background: #000000;}
+        }
+
+        h1{
+            margin-top:100px;
+            font-size:45px;
+            text-shadow: 0 0 20px yellow;
+        }
+
+        p{
+            font-size:20px;
+        }
+
+        .btn{
+            display:inline-block;
+            margin:15px;
+            padding:12px 25px;
+            font-size:18px;
+            border:none;
+            border-radius:30px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .insta{
+            background:#E1306C;
+            color:white;
+        }
+
+        .youtube{
+            background:#FF0000;
+            color:white;
+        }
+
+        .btn:hover{
+            transform:scale(1.1);
+            box-shadow:0 0 20px white;
+        }
+
+        footer{
+            margin-top:80px;
+            font-size:14px;
+            opacity:0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Shiva Rawat 🔥</h1>
+    <p>Official Gaming & Creative Website</p>
+
+    <button class="btn insta" onclick="openInsta()">Instagram</button>
+    <button class="btn youtube" onclick="openYT()">YouTube</button>
+
+    <footer>
+        © 2026 Shiva Rawat | All Rights Reserved
+    </footer>
+
+<script>
+    function openInsta(){
+        window.open("https://instagram.com/", "_blank");
+    }
+
+    function openYT(){
+        window.open("https://youtube.com/", "_blank");
+    }
+</script>
+
+</body>
+  </html>
